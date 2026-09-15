@@ -1,150 +1,253 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07090d">
-<meta name="description" content="Varun Suresh Kumar — Electronics & Communication Engineer and Data Science engineer building intelligent systems."
->
-<title>Varun Suresh Kumar — Engineering × Data</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#07090d;--panel:#0d1118;--line:rgba(255,255,255,.11);--text:#f3f6f8;--muted:#89929e;--accent:#62e6cf;--accent2:#8ba7ff;--max:1320px}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;background:var(--bg)}
-body{background:radial-gradient(circle at 80% 0%,rgba(98,230,207,.08),transparent 30%),radial-gradient(circle at 10% 50%,rgba(139,167,255,.06),transparent 26%),var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
-::selection{background:rgba(98,230,207,.22)}
-.shell{width:min(calc(100% - 44px),var(--max));margin:0 auto}
-.nav{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:min(calc(100% - 44px),var(--max));z-index:40;display:flex;align-items:center;justify-content:space-between;padding:12px 14px 12px 18px;border:1px solid rgba(255,255,255,.09);background:rgba(8,11,16,.7);backdrop-filter:blur(18px);border-radius:999px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
-.brand{font:600 1rem 'DM Mono';letter-spacing:.08em}.brand span{color:var(--accent)}
-.nav-links{display:flex;gap:28px;color:#abb3bd;font-size:.82rem}.nav-links a{transition:color .25s}.nav-links a:hover{color:#fff}
-.nav-cta{font-size:.76rem;padding:10px 14px;border:1px solid rgba(98,230,207,.35);border-radius:999px;color:var(--accent);background:rgba(98,230,207,.04)}
-.hero{min-height:100svh;position:relative;display:grid;grid-template-columns:minmax(0,1.03fr) minmax(420px,.97fr);align-items:center;gap:30px;padding-top:110px}
-.hero-copy{position:relative;z-index:4;max-width:760px;padding:60px 0 80px}.eyebrow{display:inline-flex;align-items:center;gap:9px;font:500 .68rem 'DM Mono';letter-spacing:.1em;color:#a8b0ba;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px var(--accent)}
-.hero-kicker{margin-top:34px;color:#737d88;font:500 .76rem 'DM Mono';letter-spacing:.14em}.hero h1{margin-top:10px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(4.4rem,9vw,9.6rem);line-height:.88;letter-spacing:-.075em}.hero h1 span{background:linear-gradient(110deg,#fff 25%,#b5c1ce 55%,#7e92a3);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-role{margin-top:30px;font-size:1.08rem;color:#c7ced6}.hero-role b{color:#fff}.hero-summary{margin-top:18px;max-width:610px;color:var(--muted);line-height:1.8;font-size:1rem}
-.hero-actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;gap:12px;padding:14px 18px;border-radius:999px;font-size:.82rem;border:1px solid var(--line);transition:transform .25s,background .25s,border-color .25s}.btn:hover{transform:translateY(-3px)}.btn-primary{background:var(--text);color:#081016;border-color:transparent}.btn-ghost{background:rgba(255,255,255,.03)}
-.hero-meta{display:flex;gap:25px;margin-top:58px;color:#646e79;font:500 .64rem 'DM Mono';letter-spacing:.1em;flex-wrap:wrap}
-.hero-visual{height:760px;position:relative;overflow:hidden}.visual-grid{position:absolute;inset:20% -20% -5% 0;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:54px 54px;transform:perspective(850px) rotateX(63deg) rotateZ(-7deg);transform-origin:center top;mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 75%,transparent)}
-#heroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}.hero-overlay{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 0 24%,rgba(7,9,13,.1) 40%,rgba(7,9,13,.75) 78%,rgba(7,9,13,1) 100%);pointer-events:none}
-.data-card{position:absolute;z-index:3;border:1px solid rgba(255,255,255,.1);background:rgba(11,15,21,.68);backdrop-filter:blur(16px);padding:15px 16px;border-radius:16px;min-width:152px;box-shadow:0 18px 45px rgba(0,0,0,.25)}.data-card small{display:block;color:#77828e;font:500 .58rem 'DM Mono';letter-spacing:.09em}.data-card strong{display:block;margin-top:5px;font:600 1.18rem 'Space Grotesk'}.card-ml{right:5%;top:23%}.card-ml strong{color:var(--accent)}.card-iot{left:5%;bottom:24%}.card-iot strong{color:#a9b8ff}.card-acc{right:2%;bottom:9%}.card-acc strong{color:#fff}
-.section{padding:150px 0}.section-top{display:grid;grid-template-columns:.65fr 1.35fr;gap:30px;align-items:end;border-bottom:1px solid var(--line);padding-bottom:28px}.section-top span{color:#646e79;font:500 .7rem 'DM Mono';letter-spacing:.12em}.section-top h2{font:500 clamp(2.3rem,5vw,4.8rem) 'Space Grotesk';letter-spacing:-.055em}.section-top p{grid-column:2;color:#707a86;font:500 .65rem 'DM Mono';letter-spacing:.1em}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding-top:62px}.big-copy{font:500 clamp(2rem,4vw,4rem) 'Space Grotesk';line-height:1.05;letter-spacing:-.045em;max-width:690px}.about-text{margin-top:28px;max-width:600px;color:var(--muted);line-height:1.9}.metrics{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:22px;overflow:hidden}.metric{padding:28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.metric:nth-child(2n){border-right:0}.metric:nth-last-child(-n+2){border-bottom:0}.metric strong{display:block;font:600 clamp(2.2rem,4vw,4.3rem) 'Space Grotesk';letter-spacing:-.06em}.metric span{display:block;margin-top:8px;color:#707a86;font:500 .62rem 'DM Mono';letter-spacing:.1em}
-.projects{display:grid;gap:18px;margin-top:55px}.project{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:24px;padding:34px;min-height:300px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));transform-style:preserve-3d;transition:border-color .3s,box-shadow .3s}.project:after{content:"";position:absolute;inset:auto -15% -70% 35%;height:240px;background:radial-gradient(circle,rgba(98,230,207,.12),transparent 65%);transform:translateZ(-1px)}.project:hover{border-color:rgba(98,230,207,.28);box-shadow:0 35px 80px rgba(0,0,0,.25)}.project-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:50px;align-items:end;height:100%}.project h3{font:500 clamp(2.2rem,5vw,5rem) 'Space Grotesk';line-height:.98;letter-spacing:-.06em;max-width:760px}.project p{margin-top:20px;color:var(--muted);max-width:690px;line-height:1.75}.project-aside{align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}.project-kicker{font:500 .63rem 'DM Mono';color:#737d88;letter-spacing:.1em}.project-score{font:600 clamp(2rem,4vw,4rem) 'Space Grotesk';color:var(--accent);letter-spacing:-.06em;text-align:right}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chip{font-size:.65rem;padding:8px 10px;border:1px solid var(--line);border-radius:999px;color:#bac2ca;background:rgba(255,255,255,.02)}.project-link{display:inline-flex;margin-top:28px;font:500 .68rem 'DM Mono';letter-spacing:.08em;color:#d8dee4;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:5px}
-.skills{display:grid;grid-template-columns:.8fr 1.2fr;border-top:1px solid var(--line);margin-top:58px}.skill-row{display:grid;grid-template-columns:180px 1fr;gap:30px;padding:24px 0;border-bottom:1px solid var(--line)}.skill-row:first-child{border-top:0}.skill-row span{font:500 .62rem 'DM Mono';color:#68727e;letter-spacing:.1em}.skill-row div{display:flex;gap:10px;flex-wrap:wrap}.skill-row b{font:500 1.18rem 'Space Grotesk'}
-.research{margin-top:58px;border:1px solid var(--line);border-radius:26px;padding:36px;display:grid;grid-template-columns:180px 1fr 80px;gap:35px;align-items:center;background:linear-gradient(145deg,rgba(139,167,255,.07),rgba(255,255,255,.02))}.research-mark{font:600 2rem 'Space Grotesk';color:#fff}.research-label{font:500 .6rem 'DM Mono';color:#75808c;letter-spacing:.1em}.research h3{margin-top:12px;font:500 clamp(1.7rem,3vw,3rem) 'Space Grotesk';letter-spacing:-.045em}.research p:last-child{margin-top:15px;color:var(--muted);line-height:1.75}.research-arrow{text-align:right;font-size:2rem;color:var(--accent)}
-.contact{padding:190px 0 120px;text-align:center;position:relative}.contact:before{content:"";position:absolute;left:50%;top:8%;transform:translateX(-50%);width:55vw;height:35vw;background:radial-gradient(circle,rgba(98,230,207,.08),transparent 65%);pointer-events:none}.contact h2{position:relative;margin:24px auto 0;font:500 clamp(3.6rem,8vw,8.2rem) 'Space Grotesk';line-height:.88;letter-spacing:-.07em}.contact h2 em{font-style:normal;color:#8c98a4}.contact-actions{position:relative;display:flex;justify-content:center;gap:12px;margin-top:40px;flex-wrap:wrap}.footer{border-top:1px solid var(--line);padding:24px 0 40px;color:#626c77;font:500 .62rem 'DM Mono';display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1)}.reveal.visible{opacity:1;transform:none}
-@media(max-width:900px){.nav-links{display:none}.hero{grid-template-columns:1fr;min-height:auto;padding-top:130px}.hero-copy{padding:40px 0 20px}.hero-visual{height:560px;margin-top:-10px}.hero h1{font-size:clamp(4rem,17vw,7rem)}.section{padding:110px 0}.section-top{grid-template-columns:1fr;gap:12px}.section-top p{grid-column:auto}.about-grid,.project-grid{grid-template-columns:1fr;gap:42px}.project-aside{align-items:flex-start;gap:35px}.project-score{text-align:left}.chips{justify-content:flex-start}.skills{grid-template-columns:1fr}.research{grid-template-columns:1fr;gap:18px}.research-arrow{text-align:left}.nav{width:calc(100% - 24px)}}
-@media(max-width:560px){.shell{width:min(calc(100% - 28px),var(--max))}.hero-visual{height:450px}.data-card{transform:scale(.88);transform-origin:center}.card-ml{right:0;top:18%}.card-iot{left:0;bottom:22%}.card-acc{right:-2%;bottom:4%}.metric{padding:22px}.skill-row{grid-template-columns:1fr;gap:12px}.project{padding:24px;border-radius:20px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.btn,.project{transition:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07090c" />
+  <meta name="description" content="Varun Suresh Kumar — B.Tech Electronics & Communication Engineering, Data Science. Portfolio spanning machine learning, IoT, embedded systems, computer vision, cybersecurity and applied research." />
+  <meta property="og:title" content="Varun Suresh Kumar — Intelligent Systems Portfolio" />
+  <meta property="og:description" content="Engineer building practical systems where hardware, software and data meet." />
+  <meta property="og:type" content="website" />
+  <title>Varun Suresh Kumar — Intelligent Systems Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<nav class="nav">
-  <a class="brand" href="#top">VSK<span>/</span></a>
-  <div class="nav-links"><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Stack</a><a href="#research">Research</a><a href="#contact">Contact</a></div>
-  <a class="nav-cta" href="https://github.com/jokervarun" target="_blank" rel="noreferrer">GitHub ↗</a>
-</nav>
+  <div class="page-loader"><div class="loader-mark">VSK<span>/</span></div><div class="loader-line"><i></i></div></div>
+  <div class="noise"></div>
+  <div class="cursor-dot"></div><div class="cursor-ring"></div>
+  <div class="scroll-progress"><i></i></div>
 
-<main id="top">
-<section class="hero shell">
-  <div class="hero-copy reveal">
-    <div class="eyebrow"><span class="dot"></span> Electronics · Data Science · Intelligent Systems</div>
-    <p class="hero-kicker">HELLO, I'M</p>
-    <h1>VARUN<br><span>SURESH KUMAR</span></h1>
-    <p class="hero-role">Electronics & Communication Engineer <b>×</b> Data Science</p>
-    <p class="hero-summary">I build systems where hardware, software and data meet — turning engineering problems into measurable, deployable solutions across machine learning, IoT, embedded systems and security.</p>
-    <div class="hero-actions"><a class="btn btn-primary" href="#work">Explore the work ↓</a><a class="btn btn-ghost" href="https://www.linkedin.com/in/varun-suresh-kumar-381761283/" target="_blank" rel="noreferrer">LinkedIn ↗</a></div>
-    <div class="hero-meta"><span>INDIA</span><span>ENGINEERING · DATA · ML</span><span>OPEN TO OPPORTUNITIES</span></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Back to top">VSK<span>/</span></a>
+    <nav class="main-nav" aria-label="Primary navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#research">Research</a>
+      <a href="#credentials">Credentials</a>
+    </nav>
+    <a class="header-link" href="https://github.com/jokervarun" target="_blank" rel="noreferrer">GitHub <b>↗</b></a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <div class="hero-vignette" aria-hidden="true"></div>
+
+      <div class="hero-content shell">
+        <div class="hero-copy">
+          <div class="availability"><span></span> ENGINEER · BUILDER · RESEARCHER</div>
+          <p class="micro-kicker">ELECTRONICS & COMMUNICATION · DATA SCIENCE</p>
+          <h1><span>Varun</span><em>Suresh Kumar</em></h1>
+          <p class="hero-lead">I build intelligent systems that connect <strong>hardware, software and data</strong> — from edge security and automotive networks to computer vision and connected devices.</p>
+          <div class="hero-buttons">
+            <a class="magnetic button-primary" href="#projects">Explore my work <span>↓</span></a>
+            <a class="magnetic button-outline" href="https://www.linkedin.com/in/varun-suresh-kumar-381761283/" target="_blank" rel="noreferrer">Let's connect <span>↗</span></a>
+          </div>
+          <div class="hero-facts">
+            <div><span>Based in</span><strong>Trivandrum, Kerala</strong></div>
+            <div><span>Education</span><strong>B.Tech · SRM IST · 2026</strong></div>
+            <div><span>Focus</span><strong>ML · IoT · Embedded · Security</strong></div>
+          </div>
+        </div>
+
+        <div class="hero-dashboard" aria-hidden="true">
+          <div class="dash-orbit dash-a"></div>
+          <div class="dash-orbit dash-b"></div>
+          <div class="dash-orbit dash-c"></div>
+          <div class="dash-core">
+            <div class="core-grid"></div>
+            <div class="core-node"><i></i><i></i><i></i><i></i><b>VSK</b><small>EDGE / DATA / SYSTEMS</small></div>
+          </div>
+          <div class="hud hud-top"><span>LIVE SYSTEM MAP</span><b>03 nodes online</b><i></i></div>
+          <div class="hud hud-ml"><span>MODEL LAYER</span><b>MSA-CNN / ML</b><small>real-time edge inference</small></div>
+          <div class="hud hud-can"><span>CAN IDS</span><b>91.30%</b><small>accuracy · 0.144 ms</small></div>
+          <div class="hud hud-iot"><span>CONNECTED LAYER</span><b>IoT / Edge</b><small>N-BaIoT · TFLite</small></div>
+          <div class="wave-panel">
+            <div class="wave-meta"><span>signal trace</span><b>ACTIVE</b></div>
+            <svg viewBox="0 0 420 110" preserveAspectRatio="none"><path d="M0,72 C25,30 40,105 65,62 S105,42 128,70 S164,99 184,57 S222,14 240,67 S275,101 294,45 S331,22 350,58 S386,90 420,38" /></svg>
+          </div>
+          <div class="dash-footer">SYSTEMS THINK IN LAYERS<span>01</span><span>↳ 06</span></div>
+        </div>
+      </div>
+      <a class="hero-scroll" href="#about"><span>scroll to explore</span><i></i></a>
+    </section>
+
+    <section class="ticker" aria-label="Capabilities">
+      <div class="ticker-track">
+        <span>Machine Learning</span><b>✦</b><span>Deep Learning</span><b>✦</b><span>IoT</span><b>✦</b><span>Embedded Systems</span><b>✦</b><span>Computer Vision</span><b>✦</b><span>Cybersecurity</span><b>✦</b><span>Data Science</span><b>✦</b>
+        <span>Machine Learning</span><b>✦</b><span>Deep Learning</span><b>✦</b><span>IoT</span><b>✦</b><span>Embedded Systems</span><b>✦</b><span>Computer Vision</span><b>✦</b><span>Cybersecurity</span><b>✦</b><span>Data Science</span><b>✦</b>
+      </div>
+    </section>
+
+    <section id="about" class="section shell">
+      <div class="section-intro reveal"><span class="section-eyebrow">PROFILE</span><h2>The thread running through all my work</h2></div>
+      <div class="about-layout">
+        <div class="about-story reveal">
+          <p class="statement">My work lives where <em>electronics meets intelligence.</em></p>
+          <p>I am a B.Tech graduate in Electronics and Communication Engineering, specialising in Data Science. My projects move across embedded systems, IoT, computer vision, machine learning and data-driven applications — with a constant focus on making the system practical, measurable and deployable.</p>
+          <p>I enjoy going from the raw signal or dataset to the engineering decision: what should be measured, which model should be used, how fast does it need to run, and how can it work in the real world?</p>
+          <div class="about-signature">VARUN SURESH KUMAR <span>— systems with a purpose</span></div>
+        </div>
+        <div class="fact-wall reveal">
+          <div class="big-fact"><span>CGPA</span><b>8.40</b><small>/ 10</small></div>
+          <div class="big-fact"><span>PROJECTS</span><b>10+</b><small>across multiple domains</small></div>
+          <div class="big-fact"><span>RESEARCH</span><b>01</b><small>IEEE publication</small></div>
+          <div class="big-fact accent-fact"><span>FASTEST RESULT</span><b>0.144</b><small>ms inference latency</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section projects-section">
+      <div class="shell">
+        <div class="section-intro project-heading reveal"><span class="section-eyebrow">SELECTED WORK</span><h2>Projects, from intelligent models to physical systems.</h2><p>Every project starts with a problem. These are the builds that best show how I approach it.</p></div>
+
+        <div class="featured-project reveal" data-project="botnet">
+          <div class="project-visual botnet-visual">
+            <div class="visual-label">01 / edge security</div>
+            <div class="network-scene">
+              <span class="network-core"></span><i style="--x:16%;--y:20%"></i><i style="--x:72%;--y:16%"></i><i style="--x:82%;--y:65%"></i><i style="--x:25%;--y:77%"></i><i style="--x:55%;--y:82%"></i><i style="--x:44%;--y:38%"></i>
+            </div>
+            <div class="project-radar"><span>MSA-CNN</span><b>90.46%</b><small>reported research result</small></div>
+          </div>
+          <div class="featured-copy">
+            <div class="project-meta"><span>DEC 2025 — PRESENT</span><span>SRMIST · ML / CYBERSECURITY / IoT</span></div>
+            <h3>Lightweight IoT Botnet Detection System using ML and Deep Learning</h3>
+            <p>Built a scalable IoT intrusion-detection workflow for botnet attacks such as <b>Mirai</b> and <b>Gafgyt</b>, combining classical machine learning and deep learning models with feature engineering, cross-device validation and edge-focused optimisation.</p>
+            <div class="model-strip"><span>Logistic Regression</span><span>Random Forest</span><span>XGBoost</span><span>LightGBM</span><span>MLP</span><span>CNN</span></div>
+            <div class="project-bottom"><button class="detail-button" data-open="botnet">View case study <span>↗</span></button><a href="https://github.com/jokervarun/major-proj" target="_blank" rel="noreferrer">Open repository <span>↗</span></a></div>
+          </div>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-tile reveal" data-project="can">
+            <div class="tile-art can-art"><span class="can-badge">CAN</span><div class="scan-line"></div><div class="can-number">91.30<span>%</span></div></div>
+            <div class="tile-content"><div class="tile-meta"><span>JAN — MAR 2026</span><span>AUTOMOTIVE CYBERSECURITY</span></div><h3>CAN Bus Intrusion Detection System</h3><p>ML-based CAN intrusion detection using XGBoost, validated on ROAD, OTIDS and SynCAN across fuzzy, replay and spoofing attacks.</p><div class="tile-result"><b>91.30%</b><span>accuracy</span><i></i><b>0.144 ms</b><span>latency</span></div><button class="detail-button" data-open="can">Explore system <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="pothole">
+            <div class="tile-art road-art"><span class="road-glow"></span><div class="road-markers"><i></i><i></i><i></i></div><div class="camera-ring"><span>YOLOv8</span></div></div>
+            <div class="tile-content"><div class="tile-meta"><span>JAN — MAY 2025</span><span>EMBEDDED SYSTEM</span></div><h3>Pothole Detection and Filling System</h3><p>YOLOv8-based pothole detection paired with an Arduino-driven filling mechanism, plus IoT integration for real-time reporting and location tracking.</p><div class="tag-row"><span>Arduino</span><span>YOLOv8</span><span>IoT</span></div><button class="detail-button" data-open="pothole">Explore system <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="lifi">
+            <div class="tile-art lifi-art"><div class="lifi-beam"></div><div class="lifi-device"><i></i><i></i><i></i></div><span>Li-Fi</span></div>
+            <div class="tile-content"><div class="tile-meta"><span>JAN — APR 2025</span><span>IoT</span></div><h3>Audio Transfer Using Li-Fi Technology</h3><p>Designed an LED–photodiode prototype for wireless audio transmission with high speed and zero interference.</p><div class="tag-row"><span>LED</span><span>Photodiode</span><span>Wireless</span></div><button class="detail-button" data-open="lifi">Explore build <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="hvac">
+            <div class="tile-art hvac-art"><div class="hvac-lines"><i></i><i></i><i></i></div><div class="temp-readout">23.8°<small>STABLE</small></div></div>
+            <div class="tile-content"><div class="tile-meta"><span>NOV — DEC 2024</span><span>IoT</span></div><h3>Smart HVAC System with IoT Controls</h3><p>IoT-enabled HVAC concept with real-time monitoring, remote control and automated climate adjustment using TinkerCAD.</p><div class="tag-row"><span>TinkerCAD</span><span>IoT Controls</span></div><button class="detail-button" data-open="hvac">Explore build <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="alcohol">
+            <div class="tile-art sensor-art"><div class="sensor-ring"></div><div class="sensor-chip">MQ-3</div><span>8051</span></div>
+            <div class="tile-content"><div class="tile-meta"><span>OCT — NOV 2024</span><span>EMBEDDED SYSTEM</span></div><h3>Alcohol Detection System</h3><p>MQ-3 sensor-based alcohol detection system using 8051 microcontroller simulation in Keil and Proteus.</p><div class="tag-row"><span>Keil</span><span>Proteus</span><span>MQ-3</span><span>8051</span></div><button class="detail-button" data-open="alcohol">Explore build <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="diet">
+            <div class="tile-art diet-art"><div class="bars"><i style="height:62%"></i><i style="height:80%"></i><i style="height:46%"></i><i style="height:70%"></i><i style="height:92%"></i></div><span>POWER BI</span></div>
+            <div class="tile-content"><div class="tile-meta"><span>OCT — NOV 2024</span><span>DATABASE DESIGN</span></div><h3>Diet Planner</h3><p>Database-driven diet planning tool with Power BI dashboards for tracking and visualising nutrition data.</p><div class="tag-row"><span>MySQL</span><span>Power BI</span></div><button class="detail-button" data-open="diet">Explore build <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="gateway">
+            <div class="tile-art verilog-art"><div class="logic-grid"></div><span>VERILOG</span><b>GATEWAY</b></div>
+            <div class="tile-content"><div class="tile-meta"><span>SEP — OCT 2024</span><span>VLSI</span></div><h3>Gateway System</h3><p>Verilog-based gateway control system, designed and verified with optimised logic for VLSI applications.</p><div class="tag-row"><span>Verilog HDL</span><span>Xilinx</span></div><button class="detail-button" data-open="gateway">Explore build <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="gas">
+            <div class="tile-art gas-art"><div class="gas-ring"></div><div class="gas-alert">ALERT</div><span>MQ SENSOR</span></div>
+            <div class="tile-content"><div class="tile-meta"><span>NOV — DEC 2023</span><span>ELECTRONICS</span></div><h3>Gas Leakage Detection System</h3><p>MQ-series sensor system with audible alarm and indicator alerts, validated through TinkerCAD circuit simulation.</p><div class="tag-row"><span>MQ-series</span><span>TinkerCAD</span></div><button class="detail-button" data-open="gas">Explore build <span>↗</span></button></div>
+          </article>
+
+          <article class="project-tile reveal" data-project="piezo">
+            <div class="tile-art piezo-art"><div class="shoe"><i></i><i></i><i></i></div><span>HARVEST</span></div>
+            <div class="tile-content"><div class="tile-meta"><span>DEC 2022</span><span>IoT / ENERGY</span></div><h3>Piezoelectric Harvesting Shoes</h3><p>Footwear prototype using piezoelectric modules to harvest walking energy and power portable devices.</p><div class="tag-row"><span>Piezoelectric</span><span>Energy Harvesting</span></div><button class="detail-button" data-open="piezo">Explore build <span>↗</span></button></div>
+          </article>
+        </div>
+        <p class="projects-note reveal">These projects are represented here as portfolio case studies. Your existing personal GitHub repositories remain separate and untouched.</p>
+      </div>
+    </section>
+
+    <section id="experience" class="section shell">
+      <div class="section-intro reveal"><span class="section-eyebrow">EXPERIENCE</span><h2>A practical start in engineering and operations.</h2></div>
+      <div class="experience-card reveal">
+        <div class="experience-mark"><span>Oman International</span><b>Electronics<br>& Trading</b></div>
+        <div class="experience-main"><div class="experience-top"><span>Dec 2024 — Jan 2025</span><span>Muscat, Oman</span></div><h3>Intern — Business Operations / Administrative</h3><p>Worked full-time while supporting two major projects related to <b>AV systems</b> and <b>security systems</b>. Gained exposure to documentation, project coordination and the practical side of delivering technical work.</p><p>Assisted with paperwork for ministry approvals and contributed to a government project, strengthening my understanding of approval processes and project coordination.</p></div>
+      </div>
+    </section>
+
+    <section id="research" class="section research-section">
+      <div class="shell">
+        <div class="section-intro reveal"><span class="section-eyebrow">RESEARCH</span><h2>Turning an engineering project into publishable work.</h2></div>
+        <div class="research-hero reveal">
+          <div class="research-cover"><div class="research-logo">IEEE</div><span>NELEX 2025 · ICNGE</span><b>3038</b></div>
+          <div class="research-copy"><div class="research-status">PUBLICATION · JUL 2026</div><h3>IoT Botnet Detection Using a Multi-Scale Attention CNN: A Scalable Framework for Multi-Class Botnet Traffic Classification</h3><p>Research work exploring a lightweight deep-learning approach for real-time IoT botnet detection using the N-BaIoT dataset. The work focuses on scalable multi-class classification and deployment suitability for resource-constrained edge environments.</p><div class="research-metrics"><div><b>90.46%</b><span>reported accuracy</span></div><div><b>50k</b><span>parameters</span></div><div><b>9-fold</b><span>LODO validation</span></div><div><b>7M+</b><span>network flows</span></div></div><div class="author-line"><span>Authors</span><strong>Tarun Pradeep · Varun Suresh Kumar · Ceronmani Sharmila V · CR Akash Preetham</strong></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="credentials" class="section shell credentials-section">
+      <div class="section-intro reveal"><span class="section-eyebrow">EDUCATION & CREDENTIALS</span><h2>The foundation behind the builds.</h2></div>
+      <div class="credential-grid">
+        <div class="education-stack reveal">
+          <article class="education-card primary"><span>2022 — 2026</span><div><h3>SRM Institute of Science and Technology</h3><p>B.Tech · Electronics and Communication Engineering — Data Science</p><b>CGPA 8.40 / 10</b></div></article>
+          <article class="education-card"><span>2022</span><div><h3>Indian School Al Wadi Al Kabir</h3><p>Class XII · CBSE · PCMB · Muscat, Oman</p><b>75%</b></div></article>
+          <article class="education-card"><span>2020</span><div><h3>Indian School Al Wadi Al Kabir</h3><p>Class X · CBSE · PCMB · Muscat, Oman</p><b>77.2%</b></div></article>
+        </div>
+        <div class="cert-list reveal">
+          <div class="subhead"><span>Certifications</span><small>6 completed credentials</small></div>
+          <article><b>Python (Basic)</b><span>HackerRank · Jan 2024</span><i>01</i></article>
+          <article><b>The Arduino Platform and C Programming</b><span>University of California, Irvine · Sep 2024</span><i>02</i></article>
+          <article><b>Foundations of Data Science</b><span>Google · Oct 2024</span><i>03</i></article>
+          <article><b>ISWDP Level 1</b><span>IISc · Oct 2024</span><i>04</i></article>
+          <article><b>Computer Architecture</b><span>NPTEL · Jul 2023</span><i>05</i></article>
+          <article><b>Altium Education PCB Basic Design Course</b><span>Altium Education · Aug 2025</span><i>06</i></article>
+          <article><b>Piezoelectric Harvesting Shoes</b><span>Department of Physics and Nanotechnology, SRMIST · Dec 2022</span><i>07</i></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell toolkit-section">
+      <div class="section-intro reveal"><span class="section-eyebrow">TECHNICAL TOOLKIT</span><h2>A stack that moves comfortably from code to circuit.</h2></div>
+      <div class="toolkit-grid reveal">
+        <div class="tool-group"><span>Programming</span><h3>Python</h3><h3>C / C++</h3><h3>MySQL</h3></div>
+        <div class="tool-group"><span>ML & Libraries</span><h3>scikit-learn</h3><h3>TensorFlow / Keras</h3><h3>XGBoost</h3><h3>Pandas · NumPy</h3><h3>Matplotlib</h3></div>
+        <div class="tool-group"><span>Design & Simulation</span><h3>EasyEDA</h3><h3>MATLAB</h3><h3>AutoCAD</h3><h3>LTspice</h3><h3>Altium</h3><h3>Power BI</h3><h3>Xilinx / Verilog HDL</h3></div>
+        <div class="tool-group"><span>Hardware & Tools</span><h3>Keil</h3><h3>Proteus</h3><h3>TinkerCAD</h3><h3>Arduino IDE</h3><h3>Jupyter</h3></div>
+      </div>
+    </section>
+
+    <section class="section shell community-section">
+      <div class="section-intro reveal"><span class="section-eyebrow">BEYOND ENGINEERING</span><h2>People, community and the work around the work.</h2></div>
+      <div class="community-grid">
+        <div class="community-card reveal"><span>VOLUNTEERING</span><article><b>Blue Cross of India</b><small>Sep 2023 · Volunteer · Hospitality</small></article><article><b>NSS — Outreach Activity at Old Age Home</b><small>Sep 2024 · Volunteer</small></article><article><b>SRM NSS Wing — Campus Development</b><small>Jan — Apr 2023 · Volunteer</small></article></div>
+        <div class="community-card reveal"><span>WORKSHOP</span><article class="workshop-main"><b>STTP on Mobile Application Development using Android & Drone Development</b><small>Sep 2023 · CINTEL Student Association · SRMIST, Chennai</small></article><div class="workshop-visual"><div>ANDROID</div><div>DRONE</div><div>BUILD</div></div></div>
+        <div class="community-card reveal languages"><span>LANGUAGES</span><div class="language-pill"><b>English</b><span>Professional Working</span></div><div class="language-pill"><b>Malayalam</b><span>Native</span></div><div class="language-pill"><b>Hindi</b><span>Professional Working</span></div><div class="language-pill"><b>Tamil</b><span>Professional Working</span></div><div class="language-pill"><b>Spanish</b><span>Fundamental</span></div></div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-shell">
+      <div class="shell contact-panel reveal">
+        <div class="contact-orbit"></div>
+        <div class="contact-copy"><span class="section-eyebrow">LET'S BUILD</span><h2>Good engineering starts with a useful problem.</h2><p>For opportunities, collaboration, research or just a conversation around intelligent systems, reach out through LinkedIn or GitHub.</p><div class="contact-buttons"><a class="magnetic button-primary" href="https://www.linkedin.com/in/varun-suresh-kumar-381761283/" target="_blank" rel="noreferrer">Connect on LinkedIn <span>↗</span></a><a class="magnetic button-outline" href="https://github.com/jokervarun" target="_blank" rel="noreferrer">View GitHub <span>↗</span></a></div></div>
+        <div class="contact-data"><span>VARUN SURESH KUMAR</span><b>Trivandrum, Kerala, India</b><small>B.Tech · ECE — Data Science · SRM IST · 2026</small></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell"><span>© <span id="year"></span> Varun Suresh Kumar</span><span>Built for the web · hosted with GitHub Pages</span><a href="#top">Back to top ↑</a></footer>
+
+  <div class="modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project details">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card"><button class="modal-close" data-close-modal aria-label="Close">×</button><div class="modal-icon" id="modalIcon"></div><div class="modal-kicker" id="modalKicker"></div><h2 id="modalTitle"></h2><p id="modalBody"></p><div class="modal-details" id="modalDetails"></div></div>
   </div>
-  <div class="hero-visual">
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-overlay"></div>
-    <div class="visual-grid"></div>
-    <div class="data-card card-ml"><small>SYSTEM LAYER</small><strong>ML / DL</strong></div>
-    <div class="data-card card-iot"><small>CONNECTED LAYER</small><strong>IoT / EDGE</strong></div>
-    <div class="data-card card-acc"><small>CAN IDS RESULT</small><strong>91.30%</strong></div>
-  </div>
-</section>
 
-<section id="about" class="section shell">
-  <div class="section-top"><span>THE BUILDER</span><h2>Curious about systems, serious about making them work.</h2><p>ENGINEERING WITH A DATA-FIRST MINDSET</p></div>
-  <div class="about-grid">
-    <div class="reveal"><p class="big-copy">I like problems that don't fit inside one box.</p><p class="about-text">My work spans electronics, data science, machine learning, IoT and software. I enjoy taking an idea from raw signals and datasets through experimentation, evaluation and practical deployment.</p></div>
-    <div class="metrics reveal"><div class="metric"><strong>8.40</strong><span>CGPA</span></div><div class="metric"><strong>10+</strong><span>PROJECTS</span></div><div class="metric"><strong>01</strong><span>IEEE PUBLICATION</span></div><div class="metric"><strong>0.144 ms</strong><span>CAN IDS INFERENCE LATENCY</span></div></div>
-  </div>
-</section>
-
-<section id="work" class="section shell">
-  <div class="section-top"><span>SELECTED WORK</span><h2>Built to detect, understand and respond.</h2><p>SELECTED PROJECTS — SOURCE REPOSITORIES REMAIN SEPARATE</p></div>
-  <div class="projects">
-    <article class="project reveal" data-tilt><div class="project-grid"><div><h3>IoT Botnet<br>Detection System</h3><p>Machine-learning and deep-learning security work using N-BaIoT data, with model experimentation and TensorFlow Lite deployment in the workflow.</p><a class="project-link" href="https://github.com/jokervarun/major-proj" target="_blank" rel="noreferrer">VIEW SOURCE REPOSITORY ↗</a></div><div class="project-aside"><span class="project-kicker">INTELLIGENT SECURITY</span><strong class="project-score">ML / DL</strong><div class="chips"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">N-BaIoT</span><span class="chip">TFLite</span></div></div></div></article>
-    <article class="project reveal" data-tilt><div class="project-grid"><div><h3>CAN Bus Intrusion<br>Detection System</h3><p>Intrusion detection for CAN traffic with a reported 91.30% accuracy and 0.144 ms inference latency — a cyber-physical security problem approached through machine learning.</p></div><div class="project-aside"><span class="project-kicker">CYBER-PHYSICAL SECURITY</span><strong class="project-score">91.30%</strong><div class="chips"><span class="chip">Python</span><span class="chip">ML</span><span class="chip">CAN</span></div></div></div></article>
-    <article class="project reveal" data-tilt><div class="project-grid"><div><h3>Pothole<br>Detection System</h3><p>Computer-vision work focused on automatic road-surface pothole detection for a practical detection pipeline.</p></div><div class="project-aside"><span class="project-kicker">COMPUTER VISION</span><strong class="project-score">VISION</strong><div class="chips"><span class="chip">Python</span><span class="chip">Computer Vision</span></div></div></div></article>
-  </div>
-</section>
-
-<section id="stack" class="section shell">
-  <div class="section-top"><span>TECHNICAL STACK</span><h2>The tools behind the ideas.</h2><p>PROGRAMMING · DATA · SYSTEMS · ML</p></div>
-  <div class="skills reveal">
-    <div class="skill-row"><span>PROGRAMMING</span><div><b>Python</b><b>C / C++</b></div></div>
-    <div class="skill-row"><span>DATA & ML</span><div><b>Machine Learning</b><b>Deep Learning</b><b>Data Science</b></div></div>
-    <div class="skill-row"><span>SYSTEMS</span><div><b>IoT</b><b>Embedded Systems</b><b>CAN</b></div></div>
-    <div class="skill-row"><span>TOOLS</span><div><b>TensorFlow</b><b>TensorFlow Lite</b><b>Simulation</b></div></div>
-  </div>
-</section>
-
-<section id="research" class="section shell">
-  <div class="section-top"><span>RESEARCH</span><h2>From project work to published research.</h2><p>IEEE PUBLICATION</p></div>
-  <div class="research reveal"><div class="research-mark">IEEE</div><div><p class="research-label">PUBLISHED RESEARCH</p><h3>Engineering work grounded in intelligent systems, connected technology and security.</h3><p>My research portfolio complements the hands-on project work, bringing experimentation and engineering into a publication-oriented workflow.</p></div><div class="research-arrow">↗</div></div>
-</section>
-
-<section class="section shell">
-  <div class="section-top"><span>EDUCATION</span><h2>A technical foundation with room to keep building.</h2><p>ECE · DATA SCIENCE · APPLIED ENGINEERING</p></div>
-  <div class="research reveal" style="margin-top:58px;grid-template-columns:1fr;gap:8px"><p class="research-label">B.TECH</p><h3>Electronics & Communication Engineering — Data Science</h3><p>CGPA 8.40 · supported by internships, certifications, volunteering and applied project work.</p></div>
-</section>
-
-<section id="contact" class="contact shell">
-  <div class="eyebrow"><span class="dot"></span> LET'S BUILD SOMETHING USEFUL</div>
-  <h2>Have a problem<br><em>worth solving?</em></h2>
-  <div class="contact-actions"><a class="btn btn-primary" href="https://www.linkedin.com/in/varun-suresh-kumar-381761283/" target="_blank" rel="noreferrer">Connect on LinkedIn ↗</a><a class="btn btn-ghost" href="https://github.com/jokervarun" target="_blank" rel="noreferrer">View GitHub ↗</a></div>
-</section>
-</main>
-<footer class="shell footer"><span>© <span id="year"></span> VARUN SURESH KUMAR</span><span>BUILT FOR THE WEB · HOSTED ON GITHUB</span></footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-const canvas=document.getElementById('heroCanvas');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(42,canvas.clientWidth/canvas.clientHeight,.1,100);camera.position.set(0,0,6.6);
-const group=new THREE.Group();scene.add(group);
-const outerGeo=new THREE.IcosahedronGeometry(1.8,2);
-const outer=new THREE.Mesh(outerGeo,new THREE.MeshBasicMaterial({color:0x62e6cf,wireframe:true,transparent:true,opacity:.42}));
-const inner=new THREE.Mesh(new THREE.IcosahedronGeometry(1.15,2),new THREE.MeshBasicMaterial({color:0x17242c,transparent:true,opacity:.55,wireframe:true}));
-const nucleus=new THREE.Mesh(new THREE.IcosahedronGeometry(.62,1),new THREE.MeshBasicMaterial({color:0xb9fff3,transparent:true,opacity:.8}));
-group.add(outer,inner,nucleus);
-const particleCount=900,pg=new THREE.BufferGeometry(),pos=new Float32Array(particleCount*3);
-for(let i=0;i<particleCount;i++){pos[i*3]=(Math.random()-.5)*18;pos[i*3+1]=(Math.random()-.5)*15;pos[i*3+2]=(Math.random()-.5)*18}
-pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
-const particles=new THREE.Points(pg,new THREE.PointsMaterial({color:0x9fb2ff,size:.018,transparent:true,opacity:.55}));scene.add(particles);
-const ringMat=new THREE.MeshBasicMaterial({color:0x62e6cf,wireframe:true,transparent:true,opacity:.2});
-for(const r of [2.25,2.65,3.05]){const ring=new THREE.Mesh(new THREE.TorusGeometry(r,.008,6,160),ringMat);ring.rotation.x=Math.PI*.5+Math.random()*.5;ring.rotation.y=Math.random()*.8;group.add(ring)}
-let mx=0,my=0,tx=0,ty=0;window.addEventListener('pointermove',e=>{mx=(e.clientX/window.innerWidth-.5);my=(e.clientY/window.innerHeight-.5);tx=mx*.7;ty=my*.45});
-const clock=new THREE.Clock();
-function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}
-window.addEventListener('resize',resize);resize();
-function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();group.rotation.y+=.0018;group.rotation.x+=.0006;group.position.x+=(tx*.28-group.position.x)*.025;group.position.y+=(-ty*.18-group.position.y)*.025;outer.rotation.z=Math.sin(t*.35)*.14;inner.rotation.y-=.0012;nucleus.scale.setScalar(1+Math.sin(t*2.1)*.04);particles.rotation.y+=.00028;particles.rotation.x=Math.sin(t*.12)*.02;renderer.render(scene,camera)}animate();
-const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.14});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-const cards=document.querySelectorAll('[data-tilt]');cards.forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,rx=((y/r.height)-.5)*-5.5,ry=((x/r.width)-.5)*5.5;card.style.transform=`perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(7px)`});card.addEventListener('pointerleave',()=>card.style.transform='')});
-document.getElementById('year').textContent=new Date().getFullYear();
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
