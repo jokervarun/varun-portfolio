@@ -1,288 +1,90 @@
 (() => {
   'use strict';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touch = matchMedia('(pointer: coarse)').matches;
+  const $ = (s,p=document)=>p.querySelector(s);
+  const $$ = (s,p=document)=>[...p.querySelectorAll(s)];
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isTouch = matchMedia('(pointer: coarse)').matches;
+  addEventListener('load',()=>setTimeout(()=>$('.page-loader')?.classList.add('hide'),650));
+  const year=$('#year'); if(year) year.textContent=new Date().getFullYear();
 
-  // ---------- Loader ----------
-  window.addEventListener('load', () => {
-    window.setTimeout(() => document.querySelector('.page-loader')?.classList.add('hide'), 700);
-  });
-
-  // ---------- Scroll progress ----------
-  const progress = document.querySelector('.scroll-progress i');
-  const updateProgress = () => {
-    const root = document.documentElement;
-    const max = root.scrollHeight - window.innerHeight;
-    progress.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
-  };
-  addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-
-  // ---------- Mouse system ----------
-  const dot = document.querySelector('.cursor-dot');
-  const ring = document.querySelector('.cursor-ring');
-  let pointerX = innerWidth / 2, pointerY = innerHeight / 2;
-  let ringX = pointerX, ringY = pointerY;
-
-  if (!isTouch && !prefersReducedMotion) {
-    addEventListener('pointermove', e => {
-      pointerX = e.clientX; pointerY = e.clientY;
-      dot.style.opacity = '1'; ring.style.opacity = '1';
-      dot.style.left = `${pointerX}px`; dot.style.top = `${pointerY}px`;
-    }, { passive: true });
-    const cursorLoop = () => {
-      ringX += (pointerX - ringX) * 0.14;
-      ringY += (pointerY - ringY) * 0.14;
-      ring.style.left = `${ringX}px`; ring.style.top = `${ringY}px`;
-      requestAnimationFrame(cursorLoop);
-    };
-    cursorLoop();
-
-    document.querySelectorAll('a,button,.project-tile,.featured-project').forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('active'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('active'));
-    });
+  const contactData=$('.contact-data');
+  if(contactData&&!$('.contact-details-live')){
+    const row=document.createElement('div'); row.className='contact-details-live';
+    row.innerHTML='<a href="mailto:vk3789@srmist.edu.in">vk3789@srmist.edu.in</a><a href="tel:+917907808167">+91 7907808167</a>';
+    contactData.appendChild(row);
   }
 
-  // ---------- Reveal on scroll ----------
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -60px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  const progress=$('.scroll-progress i');
+  const progressUpdate=()=>{if(!progress)return;const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=`${max>0?(scrollY/max)*100:0}%`;};
+  addEventListener('scroll',progressUpdate,{passive:true}); progressUpdate();
 
-  // ---------- Magnetic buttons ----------
-  if (!isTouch && !prefersReducedMotion) {
-    document.querySelectorAll('.magnetic').forEach(button => {
-      button.addEventListener('pointermove', e => {
-        const r = button.getBoundingClientRect();
-        const dx = (e.clientX - (r.left + r.width / 2)) * 0.13;
-        const dy = (e.clientY - (r.top + r.height / 2)) * 0.13;
-        button.style.transform = `translate(${dx}px,${dy}px)`;
-      });
-      button.addEventListener('pointerleave', () => button.style.transform = 'translate(0,0)');
-    });
+  const sectionObserver=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)document.body.dataset.section=e.target.id||'hero';}),{threshold:.18,rootMargin:'-20% 0px -50% 0px'});
+  $$('main > section[id]').forEach(s=>sectionObserver.observe(s));
+
+  const revealObserver=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('visible');revealObserver.unobserve(e.target);}),{threshold:.08,rootMargin:'0px 0px -45px 0px'});
+  $$('.reveal').forEach((el,i)=>{el.style.setProperty('--reveal-delay',`${(i%7)*45}ms`);revealObserver.observe(el);});
+
+  const dot=$('.cursor-dot'), ring=$('.cursor-ring'); let px=innerWidth/2,py=innerHeight/2,rx=px,ry=py;
+  if(!touch&&!reduced&&dot&&ring){
+    addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;dot.style.left=`${px}px`;dot.style.top=`${py}px`;dot.style.opacity='1';ring.style.opacity='1';},{passive:true});
+    const cursorLoop=()=>{rx+=(px-rx)*.14;ry+=(py-ry)*.14;ring.style.left=`${rx}px`;ring.style.top=`${ry}px`;requestAnimationFrame(cursorLoop);}; cursorLoop();
+    $$('a,button,.project-tile,.featured-project,.tool-group h3,.language-pill').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('active'));el.addEventListener('mouseleave',()=>ring.classList.remove('active'));});
   }
 
-  // ---------- 3D project tilt ----------
-  if (!isTouch && !prefersReducedMotion) {
-    document.querySelectorAll('.project-tile,.featured-project').forEach(card => {
-      card.addEventListener('pointermove', e => {
-        const r = card.getBoundingClientRect();
-        const x = e.clientX - r.left, y = e.clientY - r.top;
-        const rx = ((y / r.height) - 0.5) * -4.5;
-        const ry = ((x / r.width) - 0.5) * 5.5;
-        card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(5px)`;
-        card.style.setProperty('--mx', `${x}px`);
-        card.style.setProperty('--my', `${y}px`);
-      });
-      card.addEventListener('pointerleave', () => card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0) translateZ(0)');
-    });
+  if(!touch&&!reduced){
+    $$('.magnetic').forEach(btn=>{btn.addEventListener('pointermove',e=>{const r=btn.getBoundingClientRect();btn.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*.11}px,${(e.clientY-(r.top+r.height/2))*.11}px)`;});btn.addEventListener('pointerleave',()=>btn.style.transform='translate(0,0)');});
+    $$('.project-tile,.featured-project').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,ax=x/r.width-.5,ay=y/r.height-.5;card.style.transform=`perspective(1150px) rotateX(${ay*-3.5}deg) rotateY(${ax*4.5}deg) translateZ(5px)`;card.style.setProperty('--mx',`${x}px`);card.style.setProperty('--my',`${y}px`);});card.addEventListener('pointerleave',()=>{card.style.transform='';card.style.setProperty('--mx','50%');card.style.setProperty('--my','50%');});});
   }
 
-  // ---------- Active nav ----------
-  const navLinks = [...document.querySelectorAll('.main-nav a')];
-  const sections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-  const navObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
-    });
-  }, { threshold: 0, rootMargin: '-35% 0px -55% 0px' });
-  sections.forEach(section => navObserver.observe(section));
+  const animateNumber=(el,target,duration=1000,dec=0,suffix='')=>{if(!el||el.dataset.animated)return;el.dataset.animated='1';const start=performance.now();const ease=t=>1-Math.pow(1-t,4);const frame=now=>{const t=Math.min(1,(now-start)/duration);el.textContent=(target*ease(t)).toFixed(dec)+suffix;if(t<1)requestAnimationFrame(frame);};requestAnimationFrame(frame);};
+  $$('.big-fact b').forEach(el=>{const obs=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const label=$('span',el.parentElement)?.textContent||'';if(label.includes('CGPA'))animateNumber(el,8.40,1050,2);else if(label.includes('PROJECTS'))animateNumber(el,10,850,0,'+');else if(label.includes('RESEARCH'))animateNumber(el,1,750,0);else if(label.includes('FASTEST'))animateNumber(el,.144,1100,3);obs.unobserve(el);}),{threshold:.65});obs.observe(el);});
+  const can=$('.can-number'); if(can){const obs=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;animateNumber(can,91.30,1100,2,'%');obs.unobserve(can);}),{threshold:.6});obs.observe(can);}
 
-  // ---------- Project detail modal ----------
-  const projectData = {
-    botnet: {
-      icon: 'IoT',
-      kicker: 'Dec 2025 — Present · SRMIST · ML / Cybersecurity / IoT',
-      title: 'Lightweight IoT Botnet Detection System using ML and Deep Learning',
-      body: 'A scalable intrusion-detection workflow for IoT botnet attacks such as Mirai and Gafgyt. The project combines classical machine learning and deep learning, feature engineering, cross-device validation and optimisation for lightweight edge deployment.',
-      details: [
-        ['Dataset', 'N-BaIoT'],
-        ['Models', 'Logistic Regression · Random Forest · XGBoost · LightGBM · MLP · CNN'],
-        ['Stack', 'Python · Scikit-learn · TensorFlow/Keras · Pandas · NumPy · Matplotlib'],
-        ['Deployment focus', 'TensorFlow Lite · real-time IoT security monitoring'],
-        ['Research result', '90.46% accuracy · 50,000 parameters'],
-        ['Validation', '9-fold Leave-One-Device-Out cross-validation']
-      ]
-    },
-    can: {
-      icon: 'CAN', kicker: 'Jan — Mar 2026 · SRMIST · Automotive Cybersecurity', title: 'CAN Bus Intrusion Detection System',
-      body: 'An ML-based intrusion-detection system for automotive CAN Bus networks, developed with XGBoost and evaluated for real-time vehicle constraints. Validation covered three benchmark datasets and multiple attack types.',
-      details: [['Model','XGBoost'],['Accuracy','91.30% classification accuracy'],['Inference','0.144 ms latency'],['Datasets','ROAD · OTIDS · SynCAN'],['Attacks','Fuzzy · Replay · Spoofing'],['Goal','Real-time in-vehicle intrusion detection']]
-    },
-    pothole: {
-      icon: 'CV', kicker: 'Jan — May 2025 · SRMIST · Embedded System', title: 'Pothole Detection and Filling System',
-      body: 'A computer-vision and embedded system that uses YOLOv8 to detect potholes, drives an Arduino-based filling mechanism, and integrates IoT features for real-time reporting and location tracking.',
-      details: [['Vision','YOLOv8'],['Controller','Arduino'],['Connectivity','IoT'],['Core idea','Detect → decide → actuate'],['Output','Real-time report + location tracking'],['Domain','Road infrastructure automation']]
-    },
-    lifi: {
-      icon: 'Li-Fi', kicker: 'Jan — Apr 2025 · SRMIST · IoT', title: 'Audio Transfer Using Li-Fi Technology',
-      body: 'An LED–photodiode Li-Fi prototype designed to transmit audio signals wirelessly, exploring optical communication as a high-speed, interference-resistant alternative to conventional radio links.',
-      details: [['Transmitter','LED'],['Receiver','Photodiode'],['Payload','Audio signal'],['Medium','Visible-light communication'],['Design goal','High-speed wireless transfer'],['Claim in CV','Zero interference']]
-    },
-    hvac: {
-      icon: 'HVAC', kicker: 'Nov — Dec 2024 · SRMIST · IoT', title: 'Smart HVAC System with IoT Controls',
-      body: 'An IoT-enabled HVAC concept with real-time monitoring, remote controls and automated climate adjustment, modelled using TinkerCAD.',
-      details: [['Platform','TinkerCAD'],['Monitoring','Real-time climate state'],['Control','Remote IoT controls'],['Automation','Automatic climate adjustment'],['Domain','Smart building systems'],['Theme','Connected control loop']]
-    },
-    alcohol: {
-      icon: '8051', kicker: 'Oct — Nov 2024 · SRMIST · Embedded System', title: 'Alcohol Detection System',
-      body: 'An MQ-3 sensor-based alcohol detection system using an 8051 microcontroller simulation, developed and tested through Keil and Proteus.',
-      details: [['Sensor','MQ-3'],['Controller','8051'],['Simulation','Keil · Proteus'],['Domain','Embedded safety system'],['Input','Gas concentration'],['Output','Detection / alert workflow']]
-    },
-    diet: {
-      icon: 'BI', kicker: 'Oct — Nov 2024 · SRMIST · Database Design', title: 'Diet Planner',
-      body: 'A database-driven nutrition planning tool paired with Power BI dashboards to track and visualise diet and nutrition information.',
-      details: [['Database','MySQL'],['Visualisation','Power BI'],['Focus','Nutrition data'],['Workflow','Store → analyse → visualise'],['Domain','Data-driven planning'],['Output','Interactive dashboard views']]
-    },
-    gateway: {
-      icon: 'VLSI', kicker: 'Sep — Oct 2024 · SRMIST · VLSI', title: 'Gateway System',
-      body: 'A Verilog HDL gateway control system designed and verified with optimised logic for VLSI applications.',
-      details: [['HDL','Verilog HDL'],['Domain','VLSI'],['Process','Design + verification'],['Focus','Gateway control logic'],['Goal','Optimised digital logic'],['Tool family','Xilinx / HDL workflow']]
-    },
-    gas: {
-      icon: 'MQ', kicker: 'Nov — Dec 2023 · SRMIST · Electronics', title: 'Gas Leakage Detection System',
-      body: 'A gas-leak detection circuit using MQ-series sensors, audible alarms and indicator alerts, validated using TinkerCAD circuit simulation.',
-      details: [['Sensors','MQ-series'],['Simulation','TinkerCAD'],['Alerts','Audible + indicator'],['Domain','Electronics safety'],['Detection','Gas leakage'],['Validation','Circuit simulation']]
-    },
-    piezo: {
-      icon: 'PZT', kicker: 'Dec 2022 · SRMIST · IoT / Energy', title: 'Piezoelectric Harvesting Shoes',
-      body: 'Footwear integrating piezoelectric modules to harvest energy generated while walking, with the goal of powering portable devices.',
-      details: [['Material','Piezoelectric modules'],['Input','Walking motion'],['Output','Harvested electrical energy'],['Use case','Portable device power'],['Domain','Energy harvesting'],['Year','Dec 2022']]
-    }
+  const techMap={python:['botnet','can','pothole'],'c / c++':[],mysql:['diet'],'scikit-learn':['botnet','can'],'tensorflow / keras':['botnet'],tensorflow:['botnet'],xgboost:['botnet','can'],lightgbm:['botnet'],pandas:['botnet'],numpy:['botnet'],matplotlib:['botnet'],arduino:['pothole'],yolov8:['pothole'],iot:['botnet','pothole','lifi','hvac'],tinkercad:['hvac','gas'],keil:['alcohol'],proteus:['alcohol'],'mq-3':['alcohol'],'8051':['alcohol'],'power bi':['diet'],'verilog hdl':['gateway'],verilog:['gateway'],easyeda:[],matlab:[],autocad:[],ltspice:[],altium:[],jupyter:[]};
+  const labels=$$('.tag-row span,.model-strip span,.tool-group h3'), cards=$$('.project-tile,.featured-project');
+  const clear=()=>{labels.forEach(x=>x.classList.remove('selected-tech'));cards.forEach(x=>x.classList.remove('tech-highlight'));};
+  labels.forEach(label=>{label.classList.add('interactive-tech');label.tabIndex=0;const activate=()=>{const k=label.textContent.trim().toLowerCase(),matches=techMap[k]||[];clear();label.classList.add('selected-tech');cards.forEach(c=>{if(matches.includes(c.dataset.project))c.classList.add('tech-highlight');});const first=cards.find(c=>matches.includes(c.dataset.project));if(first)first.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});};label.addEventListener('click',activate);label.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});});
+
+  const projectData={
+    botnet:{icon:'IoT',kicker:'Dec 2025 — Present · SRMIST · ML / Cybersecurity / IoT',title:'Lightweight IoT Botnet Detection System using ML and Deep Learning',body:'Developed a scalable IoT intrusion detection system to identify botnet attacks such as Mirai and Gafgyt using ML and deep learning models, with feature engineering, cross-device validation and optimisation for lightweight edge deployment.',details:[['Dataset','N-BaIoT'],['Models','Logistic Regression · Random Forest · XGBoost · LightGBM · MLP · CNN'],['Stack','Python · Scikit-learn · TensorFlow/Keras · XGBoost · LightGBM · Pandas · NumPy · Matplotlib'],['Deployment','TensorFlow Lite · real-time IoT security monitoring'],['Research result','90.46% accuracy · 50,000 parameters'],['Validation','9-fold Leave-One-Device-Out cross-validation']]},
+    can:{icon:'CAN',kicker:'Jan — Mar 2026 · SRMIST · Automotive Cybersecurity',title:'CAN Bus Intrusion Detection System',body:'Developed an ML-based Intrusion Detection System for automotive CAN Bus networks using XGBoost, achieving high classification accuracy with ultra-low inference latency and validating the system across three benchmark datasets.',details:[['Model','XGBoost'],['Accuracy','91.30% classification accuracy'],['Latency','0.144 ms inference latency'],['Datasets','ROAD · OTIDS · SynCAN'],['Attacks','Fuzzy · Replay · Spoofing'],['Generalisation','Cross-dataset validation']]},
+    pothole:{icon:'CV',kicker:'Jan — May 2025 · SRMIST · Embedded System',title:'Pothole Detection and Filling System',body:'Developed a YOLOv8-based system to detect potholes and control an Arduino-driven filling mechanism, with IoT integration for real-time reporting and location tracking.',details:[['Vision','YOLOv8'],['Controller','Arduino'],['Connectivity','IoT'],['Workflow','Detection → control → actuation'],['Reporting','Real-time reporting + location tracking'],['Domain','Embedded road infrastructure']]},
+    lifi:{icon:'Li-Fi',kicker:'Jan — Apr 2025 · SRMIST · IoT',title:'Audio Transfer Using Li-Fi Technology',body:'Designed an LED–photodiode Li-Fi prototype to transmit audio signals wirelessly with high speed and zero interference.',details:[['Transmitter','LED'],['Receiver','Photodiode'],['Payload','Audio signals'],['Medium','Optical wireless communication'],['Design goal','High-speed transfer'],['CV result','Zero interference']]},
+    hvac:{icon:'HVAC',kicker:'Nov — Dec 2024 · SRMIST · IoT',title:'Smart HVAC System with IoT Controls',body:'Created an IoT-enabled HVAC system with real-time monitoring, remote control and automated climate adjustment using TinkerCAD.',details:[['Platform','TinkerCAD'],['Monitoring','Real-time monitoring'],['Control','Remote control'],['Automation','Automated climate adjustment'],['Domain','IoT / smart building'],['Pattern','Connected control loop']]},
+    alcohol:{icon:'8051',kicker:'Oct — Nov 2024 · SRMIST · Embedded System',title:'Alcohol Detection System',body:'Developed an MQ-3 sensor-based alcohol detection system using 8051 microcontroller simulation in Keil and Proteus.',details:[['Sensor','MQ-3'],['Controller','8051 microcontroller'],['Tools','Keil · Proteus'],['Domain','Embedded safety'],['Input','Gas concentration'],['Output','Detection / alert workflow']]},
+    diet:{icon:'BI',kicker:'Oct — Nov 2024 · SRMIST · Database Design',title:'Diet Planner',body:'Built a database-driven diet planning tool with Power BI dashboards to track and visualise nutrition data.',details:[['Database','MySQL'],['Visualisation','Power BI'],['Data','Nutrition'],['Workflow','Store → analyse → visualise'],['Domain','Database / analytics'],['Output','Dashboard views']]},
+    gateway:{icon:'VLSI',kicker:'Sep — Oct 2024 · SRMIST · VLSI',title:'Gateway System',body:'Designed and verified a Verilog-based gateway control system with optimised logic for VLSI applications.',details:[['HDL','Verilog HDL'],['Domain','VLSI'],['Process','Design + verification'],['Focus','Gateway control'],['Goal','Optimised logic'],['Tool family','Xilinx / Verilog workflow']]},
+    gas:{icon:'MQ',kicker:'Nov — Dec 2023 · SRMIST · Electronics',title:'Gas Leakage Detection System',body:'Built a gas leak detection system using MQ-series sensors with audible alarm and indicator alerts; validated using TinkerCAD circuit simulation.',details:[['Sensors','MQ-series'],['Simulation','TinkerCAD'],['Alerts','Audible + indicator'],['Domain','Electronics safety'],['Detection','Gas leakage'],['Validation','Circuit simulation']]},
+    piezo:{icon:'PZT',kicker:'Dec 2022 · SRMIST · IoT',title:'Piezoelectric Harvesting Shoes',body:'Developed footwear with piezoelectric modules to harvest walking energy and power portable devices.',details:[['Input','Walking motion'],['Technology','Piezoelectric modules'],['Output','Harvested energy'],['Use case','Portable device power'],['Domain','Energy harvesting'],['Date','Dec 2022']]}
   };
 
-  const modal = document.getElementById('projectModal');
-  const modalIcon = document.getElementById('modalIcon');
-  const modalKicker = document.getElementById('modalKicker');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalBody = document.getElementById('modalBody');
-  const modalDetails = document.getElementById('modalDetails');
+  const modal=$('#projectModal'), mi=$('#modalIcon'), mk=$('#modalKicker'), mt=$('#modalTitle'), mb=$('#modalBody'), md=$('#modalDetails');
+  const openModal=k=>{const p=projectData[k];if(!p||!modal)return;mi.textContent=p.icon;mk.textContent=p.kicker;mt.textContent=p.title;mb.textContent=p.body;md.innerHTML=p.details.map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join('');modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');};
+  const closeModal=()=>{modal?.classList.remove('open');modal?.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');};
+  $$('[data-open]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openModal(b.dataset.open);}));
+  $$('[data-close-modal]').forEach(b=>b.addEventListener('click',closeModal));
+  $$('.project-tile,.featured-project').forEach(c=>c.addEventListener('click',e=>{if(!e.target.closest('a,button')&&c.dataset.project)openModal(c.dataset.project);}));
+  addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-  const openModal = key => {
-    const data = projectData[key];
-    if (!data) return;
-    modalIcon.textContent = data.icon;
-    modalKicker.textContent = data.kicker;
-    modalTitle.textContent = data.title;
-    modalBody.textContent = data.body;
-    modalDetails.innerHTML = data.details.map(([label, value]) => `<div><span>${label}</span><b>${value}</b></div>`).join('');
-    modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open');
-  };
-  const closeModal = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open'); };
-  document.querySelectorAll('[data-open]').forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.open)));
-  document.querySelectorAll('[data-close-modal]').forEach(btn => btn.addEventListener('click', closeModal));
-  addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  // ---------- Three.js hero ----------
-  const canvas = document.getElementById('heroCanvas');
-  if (canvas && window.THREE && !prefersReducedMotion) {
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.7));
-    renderer.setSize(innerWidth, innerHeight, false);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 7.2);
-
-    const group = new THREE.Group();
-    group.position.x = innerWidth < 1050 ? 0.25 : 0.6;
-    group.position.y = 0.05;
-    scene.add(group);
-
-    const ambient = new THREE.HemisphereLight(0x496d72, 0x050708, 1.1);
-    scene.add(ambient);
-
-    const coreGeo = new THREE.IcosahedronGeometry(1.52, 2);
-    const coreMat = new THREE.MeshPhysicalMaterial({ color: 0x79bdb8, roughness: .27, metalness: .35, transparent: true, opacity: .62, emissive: 0x102b2d, emissiveIntensity: .45, clearcoat: .6 });
-    const core = new THREE.Mesh(coreGeo, coreMat);
-    group.add(core);
-
-    const wireGeo = new THREE.IcosahedronGeometry(2.05, 2);
-    const wireMat = new THREE.MeshBasicMaterial({ color: 0x5eead4, wireframe: true, transparent: true, opacity: .20 });
-    const wire = new THREE.Mesh(wireGeo, wireMat);
-    group.add(wire);
-
-    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.15, .008, 6, 220), new THREE.MeshBasicMaterial({ color: 0x9bc7ff, transparent:true, opacity:.28 }));
-    ring1.rotation.set(.9, .2, .35); group.add(ring1);
-    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.45, .006, 6, 220), new THREE.MeshBasicMaterial({ color: 0x5eead4, transparent:true, opacity:.20 }));
-    ring2.rotation.set(-.5, .7, .2); group.add(ring2);
-
-    const nodeGeo = new THREE.SphereGeometry(.035, 8, 8);
-    const nodeMat = new THREE.MeshBasicMaterial({ color: 0x5eead4 });
-    const nodeGroup = new THREE.Group(); group.add(nodeGroup);
-    for (let i = 0; i < 42; i++) {
-      const p = new THREE.Vector3().randomDirection().multiplyScalar(2.55 + Math.random() * 1.7);
-      const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.copy(p); node.scale.setScalar(.55 + Math.random() * 1.5); nodeGroup.add(node);
-    }
-
-    // Network lines
-    const linePositions = [];
-    for (let i = 0; i < nodeGroup.children.length; i++) {
-      for (let j = i + 1; j < nodeGroup.children.length; j++) {
-        const a = nodeGroup.children[i].position, b = nodeGroup.children[j].position;
-        if (a.distanceTo(b) < 1.35) linePositions.push(a.x,a.y,a.z,b.x,b.y,b.z);
-      }
-    }
-    const lineGeo = new THREE.BufferGeometry();
-    lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions,3));
-    const lines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ color: 0x5eead4, transparent:true, opacity:.075 }));
-    group.add(lines);
-
-    // Deep particle field
-    const count = innerWidth < 700 ? 280 : 520;
-    const pts = new Float32Array(count * 3);
-    for (let i=0;i<count;i++) {
-      pts[i*3] = (Math.random()-.5)*15;
-      pts[i*3+1] = (Math.random()-.5)*10;
-      pts[i*3+2] = (Math.random()-.5)*11;
-    }
-    const pGeo = new THREE.BufferGeometry();
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pts,3));
-    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color:0x8edbd1, size:0.018, transparent:true, opacity:.35, sizeAttenuation:true }));
-    scene.add(particles);
-
-    let tx = 0, ty = 0, smx = 0, smy = 0;
-    addEventListener('pointermove', e => {
-      tx = (e.clientX / innerWidth - .5) * .75;
-      ty = (e.clientY / innerHeight - .5) * .45;
-    }, { passive:true });
-
-    const clock = new THREE.Clock();
-    const render = () => {
-      const t = clock.getElapsedTime();
-      smx += (tx-smx)*.035; smy += (ty-smy)*.035;
-      group.rotation.y += .0015;
-      group.rotation.x = smy * .35 + Math.sin(t*.25)*.025;
-      group.rotation.z = smx * .12;
-      core.rotation.x += .0012; core.rotation.y -= .0014;
-      wire.rotation.y += .0007; wire.rotation.z -= .0005;
-      ring1.rotation.z += .0022; ring2.rotation.x -= .0017;
-      particles.rotation.y += .00018; particles.rotation.x = Math.sin(t*.08)*.035;
-      renderer.render(scene,camera);
-      requestAnimationFrame(render);
-    };
-    render();
-
-    const resize = () => {
-      renderer.setSize(innerWidth, innerHeight, false);
-      camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
-      group.position.x = innerWidth < 1050 ? 0.2 : 0.6;
-      group.scale.setScalar(innerWidth < 700 ? .72 : innerWidth < 1050 ? .88 : 1);
-    };
-    addEventListener('resize', resize);
-    resize();
+  const canvas=$('#heroCanvas');
+  if(canvas&&window.THREE&&!reduced){
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,1.65));renderer.setSize(innerWidth,innerHeight,false);if('outputColorSpace' in renderer)renderer.outputColorSpace=THREE.SRGBColorSpace;
+    const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,100);camera.position.set(0,0,7.2);
+    const rig=new THREE.Group();rig.position.set(innerWidth<900?.1:.65,.05,0);scene.add(rig);scene.add(new THREE.HemisphereLight(0x7bbab5,0x030405,1.15));
+    const core=new THREE.Mesh(new THREE.IcosahedronGeometry(1.5,2),new THREE.MeshPhysicalMaterial({color:0x80c8c0,roughness:.3,metalness:.3,transparent:true,opacity:.66,emissive:0x173437,emissiveIntensity:.4,clearcoat:.6}));rig.add(core);
+    const shell=new THREE.Mesh(new THREE.IcosahedronGeometry(2.25,2),new THREE.MeshBasicMaterial({color:0x5eead4,wireframe:true,transparent:true,opacity:.22}));rig.add(shell);
+    const rings=[];[[2.15,.01,0x95cfff,.25,.85,.15],[2.55,.008,0x5eead4,.18,-.5,.72],[1.95,.006,0xffffff,.12,.25,-.8]].forEach((r,i)=>{const m=new THREE.Mesh(new THREE.TorusGeometry(r[0],r[1],8,220),new THREE.MeshBasicMaterial({color:r[2],transparent:true,opacity:r[3]}));m.rotation.set(r[4],r[5],i*.2);rig.add(m);rings.push(m);});
+    const nodes=new THREE.Group();rig.add(nodes);const ng=new THREE.SphereGeometry(.032,7,7), nm=new THREE.MeshBasicMaterial({color:0x8ce1d7});
+    for(let i=0;i<52;i++){const n=new THREE.Mesh(ng,nm);n.position.copy(new THREE.Vector3().randomDirection().multiplyScalar(2.35+Math.random()*1.7));n.scale.setScalar(.5+Math.random()*1.7);nodes.add(n);}
+    const lp=[];for(let i=0;i<nodes.children.length;i++)for(let j=i+1;j<nodes.children.length;j++){const a=nodes.children[i].position,b=nodes.children[j].position;if(a.distanceTo(b)<1.25)lp.push(a.x,a.y,a.z,b.x,b.y,b.z);}const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lp,3));rig.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0x68ddd3,transparent:true,opacity:.075})));
+    const pc=innerWidth<720?230:460, pp=new Float32Array(pc*3);for(let i=0;i<pc;i++){pp[i*3]=(Math.random()-.5)*17;pp[i*3+1]=(Math.random()-.5)*11;pp[i*3+2]=(Math.random()-.5)*12;}const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pp,3));const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x8ad7d0,size:.017,transparent:true,opacity:.3}));scene.add(pts);
+    let tx=0,ty=0,sx=0,sy=0;addEventListener('pointermove',e=>{tx=(e.clientX/innerWidth-.5)*.72;ty=(e.clientY/innerHeight-.5)*.48;},{passive:true});
+    const clock=new THREE.Clock();const render=()=>{const t=clock.getElapsedTime();sx+=(tx-sx)*.035;sy+=(ty-sy)*.035;core.rotation.y=t*.15+sx*.55;core.rotation.x=Math.sin(t*.25)*.07+sy*.2;shell.rotation.y=-t*.065+sx*.25;shell.rotation.x=t*.018;nodes.rotation.y=t*.045;nodes.rotation.x=t*.012;rings[0].rotation.z+=.001;rings[1].rotation.x-=.0007;rings[2].rotation.y+=.0005;pts.rotation.y=t*.008;renderer.render(scene,camera);requestAnimationFrame(render);};render();
+    addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();rig.position.x=innerWidth<900?.1:.65;});
   }
 
-  // ---------- Footer year ----------
-  document.getElementById('year').textContent = new Date().getFullYear();
+  const dashboard=$('.hero-dashboard');
+  if(dashboard&&!touch&&!reduced)addEventListener('pointermove',e=>{const x=(e.clientX/innerWidth-.5)*10,y=(e.clientY/innerHeight-.5)*-7;dashboard.style.transform=`translate3d(${x}px,${y}px,0)`;},{passive:true});
 })();
